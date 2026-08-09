@@ -1,0 +1,251 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DATABASE_URL_UNPOOLED")
+}
+
+enum Role {
+  SUPER_ADMIN
+  ADMIN
+}
+
+enum DeliveryMode {
+  ONLINE
+  PHYSICAL
+  HYBRID
+}
+
+enum CohortStatus {
+  OPEN
+  FEW_SEATS
+  FULLY_BOOKED
+  CLOSED
+  COMING_SOON
+  POSTPONED
+  CANCELLED
+  COMPLETED
+}
+
+enum BookingStatus {
+  RECEIVED
+  PENDING_PAYMENT
+  PAYMENT_SUBMITTED
+  PAYMENT_CONFIRMED
+  CONFIRMED
+  WAITLIST
+  CANCELLED
+  TRANSFERRED
+  COMPLETED
+}
+
+enum TestimonialSource {
+  MANUAL
+  FORM_SUBMISSION
+  POST_COURSE_EMAIL
+}
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         Role     @default(ADMIN)
+  createdAt    DateTime @default(now())
+}
+
+model Course {
+  id                 String    @id @default(cuid())
+  title              String
+  slug               String    @unique
+  category           String
+  overview           String    @db.Text
+  objectives         Json
+  whoShouldAttend    String    @db.Text
+  entryRequirements  String?   @db.Text
+  outline            Json
+  duration           String
+  deliveryMode       DeliveryMode
+  trainerInfo        String    @db.Text
+  certInfo           String?   @db.Text
+  imageUrl           String?
+  published          Boolean   @default(false)
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  cohorts            Cohort[]
+}
+
+model Cohort {
+  id                   String        @id @default(cuid())
+  courseId             String
+  course               Course        @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  startDate            DateTime
+  endDate              DateTime
+  sessionDays          String
+  sessionTimes         String
+  venue                String?
+  onlinePlatform       String?
+  fee                  Decimal       @db.Decimal(10, 2)
+  currency             String        @default("TZS")
+  seatsTotal           Int
+  seatsBooked          Int           @default(0)
+  registrationDeadline DateTime
+  status               CohortStatus  @default(OPEN)
+  createdAt            DateTime      @default(now())
+  updatedAt            DateTime      @updatedAt
+  bookings             IndividualBooking[]
+  testimonialRequests  TestimonialRequest[]
+}
+
+model IndividualBooking {
+  id                  String        @id @default(cuid())
+  bookingRef          String        @unique @default(cuid())
+  cohortId            String
+  cohort              Cohort        @relation(fields: [cohortId], references: [id], onDelete: Cascade)
+  fullName            String
+  email               String
+  phone               String
+  whatsapp            String?
+  country             String
+  city                String
+  organization        String?
+  jobTitle            String?
+  deliveryMode        DeliveryMode
+  billingName         String?
+  tin                 String?
+  paymentMethod       String
+  specialRequirements  String?
+  referralSource      String?
+  proofOfPaymentUrl   String?
+  status              BookingStatus @default(RECEIVED)
+  reminderSent        Boolean       @default(false)
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+  testimonialRequest  TestimonialRequest?
+}
+
+model CorporateRequest {
+  id             String   @id @default(cuid())
+  orgName        String
+  contactPerson  String
+  email          String
+  phone          String
+  trainingArea   String
+  participants   Int?
+  preferredDates String?
+  location       String?
+  deliveryMode   String?
+  objectives     String   @db.Text
+  customization  String?  @db.Text
+  status         String   @default("NEW")
+  notes          String?  @db.Text
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model ConsultationRequest {
+  id               String   @id @default(cuid())
+  clientName       String
+  organization     String?
+  email            String
+  phone            String
+  consultingType   String
+  description      String   @db.Text
+  preferredDate    DateTime?
+  preferredContact String
+  status           String   @default("NEW")
+  notes            String?  @db.Text
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model Testimonial {
+  id         String            @id @default(cuid())
+  authorName String
+  role       String?
+  company    String?
+  avatarUrl  String?
+  message    String            @db.Text
+  approved   Boolean           @default(false)
+  featured   Boolean           @default(false)
+  source     TestimonialSource @default(MANUAL)
+  cohortId   String?
+  token      String?           @unique
+  createdAt  DateTime          @default(now())
+}
+
+model TestimonialRequest {
+  id          String            @id @default(cuid())
+  bookingId   String            @unique
+  booking     IndividualBooking @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  cohortId    String
+  cohort      Cohort            @relation(fields: [cohortId], references: [id], onDelete: Cascade)
+  token       String            @unique @default(cuid())
+  emailSentAt DateTime?
+  responded   Boolean           @default(false)
+  expiresAt   DateTime
+  createdAt   DateTime          @default(now())
+}
+
+model Insight {
+  id               String   @id @default(cuid())
+  title            String
+  slug             String   @unique
+  body             Json
+  excerpt          String   @db.Text
+  featuredImageUrl String?
+  author           String
+  category         String
+  published        Boolean  @default(false)
+  publishedAt      DateTime?
+  metaTitle        String?
+  metaDescription  String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model HeroSection {
+  id                 Int      @id @default(autoincrement())
+  headline           String
+  subheadline        String
+  ctaText            String
+  ctaLink            String
+  backgroundImageUrl String?
+  updatedAt          DateTime @updatedAt
+}
+
+model SiteSettings {
+  id               Int      @id @default(autoincrement())
+  companyName      String   @default("Merxano Consulting")
+  email            String?
+  phone            String?
+  whatsapp         String?
+  address          String?
+  linkedIn         String?
+  facebook         String?
+  instagram        String?
+  youtube          String?
+  tiktok           String?
+  twitter          String?
+  bankName         String?
+  bankAccountName  String?
+  bankAccountNumber String?
+  bankBranch       String?
+  mobileMoneyName  String?
+  mobileMoneyNumber String?
+  paymentGateway   String?
+  updatedAt        DateTime @updatedAt
+}
+
+model NewsletterSub {
+  id            String   @id @default(cuid())
+  name          String
+  email         String   @unique
+  interests     String[]
+  consentGiven  Boolean  @default(false)
+  unsubscribed  Boolean  @default(false)
+  createdAt     DateTime @default(now())
+}
