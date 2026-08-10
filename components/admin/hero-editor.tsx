@@ -110,7 +110,7 @@ export function HeroEditor({ initial }: { initial: HeroData }) {
         </div>
       </section>
 
-      <aside className="rounded-[1.75rem] border border-slate-200/80 bg-[#0f1d3a] p-6 text-white shadow-[0_18px_50px_rgba(16,32,58,0.12)]">
+      <aside className="rounded-[1.75rem] border border-slate-200/80 bg-brand-navy p-6 text-white shadow-[0_18px_50px_rgba(16,32,58,0.12)]">
         <p className="text-sm font-semibold uppercase tracking-[0.24em] text-white/60">Live preview</p>
         <h2 className="mt-4 text-3xl font-semibold tracking-tight">{headline}</h2>
         <p className="mt-4 text-sm leading-8 text-white/76">{subheadline}</p>

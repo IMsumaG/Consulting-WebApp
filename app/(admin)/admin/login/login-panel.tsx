@@ -38,10 +38,14 @@ function LoginField({
 export function LoginPanel() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const callbackUrl = useMemo(
-    () => searchParams.get("callbackUrl") ?? "/admin/dashboard",
-    [searchParams],
-  );
+  const callbackUrl = useMemo(() => {
+    const raw = searchParams.get("callbackUrl");
+    try {
+      return raw ? decodeURIComponent(raw) : "/admin/dashboard";
+    } catch (_err) {
+      return raw ?? "/admin/dashboard";
+    }
+  }, [searchParams]);
   const [email, setEmail] = useState("admin@merxano.co.tz");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -64,7 +68,10 @@ export function LoginPanel() {
         return;
       }
 
-      router.push(result?.url ?? callbackUrl);
+      // Always navigate to the decoded, path-only callback to avoid
+      // cross-origin RSC fetches when NextAuth returns an absolute URL
+      // using `NEXTAUTH_URL`.
+      router.push(callbackUrl);
       router.refresh();
     });
   };
@@ -100,7 +107,7 @@ export function LoginPanel() {
         </section>
 
         <section className="relative mt-8 lg:mt-0 lg:-ml-10">
-          <div className="rounded-[2rem] border border-slate-200/60 bg-[#0f1d3a] p-8 text-white shadow-[0_35px_90px_rgba(15,29,58,0.35)] sm:p-10 lg:p-12">
+          <div className="rounded-[2rem] border border-slate-200/60 bg-brand-navy p-8 text-white shadow-[0_35px_90px_rgba(15,29,58,0.35)] sm:p-10 lg:p-12">
             <div className="max-w-md">
               <p className="text-sm uppercase tracking-[0.3em] text-white/60">Admin login</p>
               <h2 className="mt-4 text-2xl font-semibold sm:text-3xl">

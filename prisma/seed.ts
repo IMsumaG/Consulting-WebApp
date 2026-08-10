@@ -383,13 +383,7 @@ async function main() {
     });
   }
 
-  console.log({
-    admin: admin.email,
-    hero: hero.id,
-    settings: settings.id,
-    courses: courses.length,
-    note: "Seed completed for Merxano Consulting",
-  });
+  // Seed completed — no console output in non-interactive environments
 }
 
 main()

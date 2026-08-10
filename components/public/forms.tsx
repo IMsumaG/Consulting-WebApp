@@ -21,10 +21,10 @@ function Field({
   required?: boolean;
 }) {
   return (
-    <label className="grid gap-2 text-sm font-medium text-slate-700">
+    <label className="grid gap-2 text-sm font-semibold text-[#0f2d30]/80">
       <span>
         {label}
-        {required ? <span className="ml-1 text-brand-green">*</span> : null}
+        {required ? <span className="ml-1 text-brand-green font-bold">*</span> : null}
       </span>
       <input
         name={name}
@@ -33,7 +33,7 @@ function Field({
         value={value}
         onChange={(event) => onChange(event.target.value)}
         placeholder={placeholder}
-        className="h-12 rounded-2xl border border-slate-200 bg-white px-4 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-brand-green focus:ring-4 focus:ring-brand-green/10"
+        className="h-12 rounded-2xl border border-slate-200/80 bg-white px-4 text-[#0f2d30] outline-none transition placeholder:text-[#0f2d30]/40 focus:border-brand-green focus:ring-4 focus:ring-brand-green/10"
       />
     </label>
   );
@@ -55,10 +55,10 @@ function TextArea({
   required?: boolean;
 }) {
   return (
-    <label className="grid gap-2 text-sm font-medium text-slate-700">
+    <label className="grid gap-2 text-sm font-semibold text-[#0f2d30]/80">
       <span>
         {label}
-        {required ? <span className="ml-1 text-brand-green">*</span> : null}
+        {required ? <span className="ml-1 text-brand-green font-bold">*</span> : null}
       </span>
       <textarea
         name={name}
@@ -67,7 +67,7 @@ function TextArea({
         onChange={(event) => onChange(event.target.value)}
         placeholder={placeholder}
         rows={5}
-        className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-brand-green focus:ring-4 focus:ring-brand-green/10"
+        className="rounded-2xl border border-slate-200/80 bg-white px-4 py-3 text-[#0f2d30] outline-none transition placeholder:text-[#0f2d30]/40 focus:border-brand-green focus:ring-4 focus:ring-brand-green/10"
       />
     </label>
   );
@@ -85,14 +85,14 @@ function FormShell({
   submitted: boolean;
 }) {
   return (
-    <section className="rounded-[2rem] border border-slate-200/80 bg-white p-6 shadow-[0_18px_50px_rgba(16,32,58,0.06)] sm:p-8">
+    <section className="rounded-3xl border border-slate-200/60 bg-white p-6 premium-shadow-lg sm:p-8">
       <div className="max-w-2xl">
-        <h3 className="text-2xl font-semibold text-brand-navy">{title}</h3>
-        <p className="mt-3 text-sm leading-7 text-slate-600">{intro}</p>
+        <h3 className="text-xl font-bold tracking-tight text-[#0f2d30]">{title}</h3>
+        <p className="mt-2 text-sm leading-relaxed text-[#0f2d30]/70">{intro}</p>
       </div>
       <div className="mt-8">{children}</div>
       {submitted ? (
-        <p className="mt-6 rounded-2xl border border-brand-green/20 bg-brand-green/10 px-4 py-3 text-sm text-brand-green">
+        <p className="mt-6 rounded-2xl border border-brand-green/20 bg-brand-green/10 px-4 py-3 text-sm font-semibold text-brand-green">
           Thanks, your submission has been received.
         </p>
       ) : null}
@@ -167,7 +167,7 @@ export function InquiryForm({
         <button
           type="submit"
           disabled={pending || !canSubmit}
-          className="inline-flex h-12 w-fit items-center justify-center rounded-full bg-brand-navy px-6 text-sm font-semibold text-white transition hover:bg-brand-navy/95 disabled:cursor-not-allowed disabled:opacity-60"
+          className="inline-flex h-12 w-fit items-center justify-center rounded-full bg-brand-navy px-8 text-sm font-bold uppercase tracking-wider text-white transition hover:bg-[#15254d] disabled:cursor-not-allowed disabled:opacity-60"
         >
           {pending ? "Sending..." : submitLabel}
         </button>
@@ -268,7 +268,7 @@ export function BookingForm({
           onChange={setReferralSource}
           placeholder="How did you hear about Merxano?"
         />
-        <label className="flex items-start gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700">
+        <label className="flex items-start gap-3 rounded-2xl border border-slate-200/60 bg-slate-50 px-4 py-3 text-sm text-[#0f2d30]/80">
           <input
             type="checkbox"
             checked={privacyConsent}
@@ -278,14 +278,14 @@ export function BookingForm({
           <span>I agree to the privacy notice and understand that Merxano will use my details to process this booking.</span>
         </label>
         {error ? (
-          <p className="rounded-2xl border border-rose-400/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-700">
+          <p className="rounded-2xl border border-rose-400/30 bg-rose-500/10 px-4 py-3 text-sm font-semibold text-rose-700">
             {error}
           </p>
         ) : null}
         <button
           type="submit"
           disabled={pending || !privacyConsent}
-          className="inline-flex h-12 w-fit items-center justify-center rounded-full bg-brand-green px-6 text-sm font-semibold text-white transition hover:bg-brand-green/95 disabled:cursor-not-allowed disabled:opacity-60"
+          className="inline-flex h-12 w-fit items-center justify-center rounded-full bg-brand-green px-8 text-sm font-bold uppercase tracking-wider text-white transition hover:bg-[#246327] disabled:cursor-not-allowed disabled:opacity-60"
         >
           {pending ? "Submitting..." : "Reserve seat"}
         </button>
@@ -361,7 +361,7 @@ export function TestimonialForm({
         <button
           type="submit"
           disabled={pending}
-          className="inline-flex h-12 w-fit items-center justify-center rounded-full bg-brand-navy px-6 text-sm font-semibold text-white transition hover:bg-brand-navy/95 disabled:cursor-not-allowed disabled:opacity-60"
+          className="inline-flex h-12 w-fit items-center justify-center rounded-full bg-brand-navy px-8 text-sm font-bold uppercase tracking-wider text-white transition hover:bg-[#15254d] disabled:cursor-not-allowed disabled:opacity-60"
         >
           {pending ? "Submitting..." : "Submit testimonial"}
         </button>

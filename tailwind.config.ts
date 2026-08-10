@@ -10,9 +10,14 @@ const config: Config = {
     extend: {
       colors: {
         brand: {
-          navy: "#1a2e5e",
-          green: "#2e7d5e",
+          navy: "#0d1b3d",
+          green: "#2e7d32",
           white: "#ffffff",
+        },
+        vijana: {
+          primary: "#0e3b40",
+          secondary: "rgba(14, 59, 64, 0.67)",
+          bg: "#f8fafc",
         },
       },
       boxShadow: {

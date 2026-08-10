@@ -1,10 +1,10 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f4f1ea;
-  --foreground: #0d1b3d;
-  --muted: #65727a;
-  --border: rgba(13, 27, 61, 0.13);
+  --background: #f8fafc;
+  --foreground: #0f2d30;
+  --muted: rgba(15, 45, 48, 0.65);
+  --border: rgba(15, 45, 48, 0.08);
   --brand-navy: #0d1b3d;
   --brand-green: #2e7d32;
   --brand-white: #ffffff;
@@ -22,6 +22,12 @@
   --font-mono: var(--font-mono);
 }
 
+@layer utilities {
+  .bg-brand-navy {
+    color: white;
+  }
+}
+
 * {
   box-sizing: border-box;
 }
@@ -33,10 +39,8 @@ html {
 
 body {
   min-height: 100%;
-  background:
-    radial-gradient(circle at 0% 0%, rgba(204, 225, 198, 0.32), transparent 28rem),
-    var(--background);
-  color: var(--foreground);
+  background: linear-gradient(180deg, #f8fafc 0%, #f2f6f8 100%);
+  color: #0f2d30;
   font-family: var(--font-sans), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -48,20 +52,31 @@ a {
 }
 
 ::selection {
-  background: rgba(170, 206, 108, 0.62);
+  background: rgba(46, 125, 50, 0.15);
+  color: #0f2d30;
 }
 
 :focus-visible {
-  outline: 3px solid rgba(46, 125, 50, 0.48);
-  outline-offset: 3px;
+  outline: 2px solid #2e7d32;
+  outline-offset: 4px;
 }
 
-.display-face {
-  font-family: Georgia, "Times New Roman", serif;
-  font-weight: 400;
+.premium-shadow {
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.03),
+    0 10px 40px -12px rgba(15, 45, 48, 0.07);
 }
 
-.paper-grid {
-  background-image: linear-gradient(rgba(17, 42, 53, 0.055) 1px, transparent 1px), linear-gradient(90deg, rgba(17, 42, 53, 0.055) 1px, transparent 1px);
+.premium-shadow-lg {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02),
+    0 20px 80px -20px rgba(15, 45, 48, 0.12);
+}
+
+.soft-grid {
+  background-image: linear-gradient(rgba(13, 27, 61, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(13, 27, 61, 0.03) 1px, transparent 1px);
   background-size: 28px 28px;
 }
+
+.hero-glow {
+  background: radial-gradient(circle at top left, rgba(46, 125, 50, 0.2), transparent 40%);
+}
+

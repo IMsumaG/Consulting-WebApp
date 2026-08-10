@@ -5,7 +5,7 @@ import { ApiAuthError, ApiValidationError, fail, ok, parseJson, requireAdmin } f
 const insightSchema = z.object({
   title: z.string().min(3),
   slug: z.string().min(3),
-  body: z.any(),
+  body: z.unknown(),
   excerpt: z.string().min(20),
   featuredImageUrl: z.string().url().optional().nullable(),
   author: z.string().min(2),

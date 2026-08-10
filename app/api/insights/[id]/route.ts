@@ -5,7 +5,7 @@ import { ApiAuthError, ApiValidationError, fail, ok, parseJson, requireAdmin } f
 const updateSchema = z.object({
   title: z.string().min(3).optional(),
   slug: z.string().min(3).optional(),
-  body: z.any().optional(),
+  body: z.unknown().optional(),
   excerpt: z.string().min(20).optional(),
   featuredImageUrl: z.string().url().optional().nullable(),
   author: z.string().min(2).optional(),
