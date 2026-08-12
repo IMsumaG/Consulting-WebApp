@@ -21,9 +21,9 @@ export function SectionHeading({ eyebrow, title, description }: { eyebrow: strin
 
 export function StatChip({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-2xl border border-white/10 bg-white/10 p-4 backdrop-blur-sm">
-      <p className="text-xs font-semibold uppercase tracking-[0.24em] text-white/60">{label}</p>
-      <p className="mt-1 text-xl font-bold text-white">{value}</p>
+    <div className="rounded-2xl border border-slate-200/70 bg-white/70 p-4 shadow-sm backdrop-blur-sm">
+      <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#0f2d30]/60">{label}</p>
+      <p className="mt-1 text-xl font-bold text-[#0f2d30]">{value}</p>
     </div>
   );
 }

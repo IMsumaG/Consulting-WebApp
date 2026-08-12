@@ -1,4 +1,5 @@
 import { z } from "zod";
+import type { Prisma } from "@prisma/client";
 import prisma from "@/lib/prisma";
 import { ApiAuthError, ApiValidationError, fail, ok, parseJson, requireAdmin } from "@/lib/api";
 
@@ -31,6 +32,7 @@ export async function POST(request: Request) {
     const insight = await prisma.insight.create({
       data: {
         ...body,
+        body: body.body as Prisma.InputJsonValue,
         featuredImageUrl: body.featuredImageUrl ?? null,
         publishedAt: body.publishedAt ? new Date(body.publishedAt) : null,
         metaTitle: body.metaTitle ?? null,

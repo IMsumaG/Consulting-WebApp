@@ -41,7 +41,7 @@ export default auth((request) => {
     const callbackPath = adminTargetUrl
       ? `${adminTargetUrl.pathname}${adminTargetUrl.search}`
       : `${nextUrl.pathname}${nextUrl.search}`;
-    loginUrl.searchParams.set("callbackUrl", encodeURIComponent(callbackPath));
+    loginUrl.searchParams.set("callbackUrl", callbackPath);
     return NextResponse.redirect(loginUrl);
   }
 

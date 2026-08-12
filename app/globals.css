@@ -24,7 +24,11 @@
 
 @layer utilities {
   .bg-brand-navy {
-    color: white;
+    background-color: var(--brand-navy);
+  }
+
+  .bg-brand-green {
+    background-color: var(--brand-green);
   }
 }
 
@@ -39,6 +43,7 @@ html {
 
 body {
   min-height: 100%;
+  overflow-x: hidden;
   background: linear-gradient(180deg, #f8fafc 0%, #f2f6f8 100%);
   color: #0f2d30;
   font-family: var(--font-sans), system-ui, sans-serif;
@@ -46,9 +51,12 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+@layer base {
+  a,
+  a:visited {
+    color: inherit;
+    text-decoration: none;
+  }
 }
 
 ::selection {
@@ -79,4 +87,3 @@ a {
 .hero-glow {
   background: radial-gradient(circle at top left, rgba(46, 125, 50, 0.2), transparent 40%);
 }
-
