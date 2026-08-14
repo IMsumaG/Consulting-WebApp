@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import type { Role } from "@prisma/client";
 import { z } from "zod";
 import prisma from "./lib/prisma";
+import authConfig from "./auth.config";
 
 const credentialsSchema = z.object({
   email: z.string().email(),
@@ -11,11 +12,7 @@ const credentialsSchema = z.object({
 });
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
-  secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET || "fallback-secret-for-development-only-123456",
-  session: { strategy: "jwt" },
-  pages: {
-    signIn: "/admin/login",
-  },
+  ...authConfig,
   providers: [
     Credentials({
       name: "Admin Credentials",
@@ -72,18 +69,4 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       },
     }),
   ],
-  callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
-        token.role = ((user as { role?: Role }).role ?? "ADMIN") as Role;
-      }
-      return token;
-    },
-    async session({ session, token }) {
-      if (session.user) {
-        session.user.role = ((token.role as Role | undefined) ?? "ADMIN") as Role;
-      }
-      return session;
-    },
-  },
 });

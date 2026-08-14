@@ -1,8 +1,11 @@
+import NextAuth from "next-auth";
 import { NextResponse } from "next/server";
-import { auth } from "./auth";
+import authConfig from "./auth.config";
+
+const { auth } = NextAuth(authConfig);
 
 function isAdminHost(hostname: string) {
-  // Treat localhost (development) as admin host to avoid external redirects
+  // Treat localhost (development) as the admin host to avoid external redirects.
   if (hostname === "localhost" || hostname === "127.0.0.1") return true;
   return hostname.startsWith("admin.");
 }
@@ -14,9 +17,7 @@ export default auth((request) => {
   const isAdminRoute = nextUrl.pathname.startsWith("/admin");
   const isLoginRoute = nextUrl.pathname === "/admin/login";
   const needsAdminRewrite = isAdminDomain && !isAdminRoute;
-  const adminTargetUrl = needsAdminRewrite
-    ? nextUrl.clone()
-    : null;
+  const adminTargetUrl = needsAdminRewrite ? nextUrl.clone() : null;
 
   if (adminTargetUrl) {
     adminTargetUrl.pathname =
@@ -25,19 +26,14 @@ export default auth((request) => {
         : `/admin${nextUrl.pathname.startsWith("/") ? nextUrl.pathname : `/${nextUrl.pathname}`}`;
   }
 
-  // Skip auth checks in development when running on localhost
-  const isDev = process.env.NODE_ENV === "development" && (hostname === "localhost" || hostname === "127.0.0.1");
-  if (isDev) {
-    // Allow free access to admin routes during local development
-    return NextResponse.next();
-  }
+  // Allow local development without a database seed or session.
+  const isDev =
+    process.env.NODE_ENV === "development" &&
+    (hostname === "localhost" || hostname === "127.0.0.1");
+  if (isDev) return NextResponse.next();
 
-  // Existing auth guard – redirect to login if not authenticated
   if ((isAdminRoute || needsAdminRewrite) && !request.auth && !isLoginRoute) {
-    const baseOrigin = (hostname === "localhost" || hostname === "127.0.0.1") ? "http://localhost:3000" : nextUrl.origin;
-    const loginUrl = new URL("/admin/login", baseOrigin);
-    // Use a path-only callback URL to keep redirects same-origin and
-    // avoid cross-origin RSC payload fetches in development.
+    const loginUrl = new URL("/admin/login", nextUrl.origin);
     const callbackPath = adminTargetUrl
       ? `${adminTargetUrl.pathname}${adminTargetUrl.search}`
       : `${nextUrl.pathname}${nextUrl.search}`;
@@ -49,9 +45,7 @@ export default auth((request) => {
     return NextResponse.redirect(new URL("/admin/dashboard", nextUrl.origin));
   }
 
-  if (adminTargetUrl) {
-    return NextResponse.rewrite(adminTargetUrl);
-  }
+  if (adminTargetUrl) return NextResponse.rewrite(adminTargetUrl);
 
   return NextResponse.next();
 });
