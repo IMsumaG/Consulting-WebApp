@@ -21,6 +21,11 @@ export const metadata: Metadata = {
   description:
     "Merxano Consulting is a Tanzania-based training and consulting company helping professionals and organizations deliver excellence.",
   metadataBase: new URL("https://merxano.co.tz"),
+  icons: {
+    icon: "/images/logo.jpg",
+    shortcut: "/images/logo.jpg",
+    apple: "/images/logo.jpg",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
