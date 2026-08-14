@@ -8,6 +8,7 @@ export type PublicCourse = {
   duration: string;
   deliveryMode: CourseMode;
   fee: string;
+  imageUrl: string;
   featured?: boolean;
   cohortLabel: string;
   cohortId: string;
@@ -63,6 +64,7 @@ export const courses: PublicCourse[] = [
     duration: "5 days",
     deliveryMode: "HYBRID",
     fee: "TZS 650,000",
+    imageUrl: "/images/courses/project-management.jpg",
     featured: true,
     cohortLabel: "Open cohort",
     cohortId: "course-pmp-open-2026",
@@ -79,6 +81,7 @@ export const courses: PublicCourse[] = [
     duration: "4 days",
     deliveryMode: "ONLINE",
     fee: "TZS 480,000",
+    imageUrl: "/images/courses/business-analysis.jpg",
     featured: true,
     cohortLabel: "Few seats left",
     cohortId: "course-ba-open-2026",
@@ -95,6 +98,7 @@ export const courses: PublicCourse[] = [
     duration: "3 days",
     deliveryMode: "PHYSICAL",
     fee: "TZS 420,000",
+    imageUrl: "/images/courses/agile-scrum.jpg",
     cohortLabel: "Open cohort",
     cohortId: "course-agile-open-2026",
     cohortDates: "26 - 28 September 2026",
