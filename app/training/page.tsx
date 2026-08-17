@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { PublicShell } from "@/components/public/site-shell";
 import { CourseCard, SectionHeading } from "@/components/public/blocks";
+import { getPublishedCourses } from "@/lib/courses";
 
 export const metadata = {
   title: "Training",
@@ -10,18 +11,7 @@ export const metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function TrainingPage() {
-  let courses: any[] = [];
-  try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"}/api/courses`, {
-      cache: "no-store",
-    });
-    if (res.ok) {
-      const data = await res.json();
-      courses = data.courses ?? [];
-    }
-  } catch {
-    // DB unreachable – render empty state
-  }
+  const courses = await getPublishedCourses();
   return (
     <PublicShell>
       <section className="mx-auto max-w-7xl px-6 py-16 lg:px-10">

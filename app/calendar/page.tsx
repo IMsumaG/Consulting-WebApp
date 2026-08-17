@@ -1,14 +1,17 @@
 import Link from "next/link";
 import { PublicShell } from "@/components/public/site-shell";
 import { SectionHeading } from "@/components/public/blocks";
-import { courses } from "@/lib/site-content";
+import { getPublishedCourses } from "@/lib/courses";
 
 export const metadata = {
   title: "Calendar",
   description: "Merxano training calendar and upcoming cohort dates.",
 };
 
-export default function CalendarPage() {
+export const dynamic = "force-dynamic";
+
+export default async function CalendarPage() {
+  const courses = await getPublishedCourses();
   return (
     <PublicShell>
       <section className="mx-auto max-w-7xl px-6 py-16 lg:px-10">

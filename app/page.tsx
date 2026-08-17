@@ -2,21 +2,14 @@ import Link from "next/link";
 import { PublicShell } from "@/components/public/site-shell";
 import { CourseCard, InsightCard, SectionHeading, StatChip, TestimonialCard } from "@/components/public/blocks";
 import { brand, insights, services, testimonials } from "@/lib/site-content";
+import { getPublishedCourses } from "@/lib/courses";
+
+export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  let featuredCourses: any[] = [];
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"}/api/courses`,
-      { cache: "no-store" }
-    );
-    if (res.ok) {
-      const data = await res.json();
-      featuredCourses = (data.courses ?? []).filter((c: any) => c.featured);
-    }
-  } catch {
-    // DB unreachable – render without featured courses
-  }
+  const allCourses = await getPublishedCourses();
+  const featuredCourses = allCourses.slice(0, 3);
+  const heroCourse = allCourses[0];
 
   return (
     <PublicShell>
@@ -56,24 +49,24 @@ export default async function HomePage() {
                 <span className="rounded-full bg-brand-green/10 px-3 py-1 text-xs font-bold uppercase tracking-[0.24em] text-brand-green">
                   Next cohort
                 </span>
-                <span className="text-xs font-semibold uppercase tracking-[0.24em] text-[#0f2d30]/50">September 2026</span>
+                <span className="text-xs font-semibold uppercase tracking-[0.24em] text-[#0f2d30]/50">{heroCourse?.cohortDates ?? "Upcoming"}</span>
               </div>
               <div className="mt-8 rounded-[24px] bg-[#0f2d30] p-7 text-white">
                 <p className="text-xs font-semibold uppercase tracking-[0.24em] text-white/60">Featured programme</p>
-                <h3 className="mt-3 text-2xl font-bold tracking-tight">Project Management Professional</h3>
-                <p className="mt-3 text-sm leading-relaxed text-white/75">A practical pathway for professionals leading delivery, coordinating teams, and strengthening project confidence.</p>
+                <h3 className="mt-3 text-2xl font-bold tracking-tight">{heroCourse?.title ?? "Project Management Professional"}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-white/75">{heroCourse?.overview ?? "A practical pathway for professionals leading delivery, coordinating teams, and strengthening project confidence."}</p>
               </div>
               <div className="mt-6 grid gap-4 sm:grid-cols-2">
                 <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
                   <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#0f2d30]/50">Format</p>
-                  <p className="mt-2 text-sm font-bold text-[#0f2d30]">Hybrid</p>
+                  <p className="mt-2 text-sm font-bold text-[#0f2d30]">{heroCourse?.deliveryMode ?? "Hybrid"}</p>
                 </div>
                 <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
                   <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#0f2d30]/50">Investment</p>
-                  <p className="mt-2 text-sm font-bold text-[#0f2d30]">TZS 650,000</p>
+                  <p className="mt-2 text-sm font-bold text-[#0f2d30]">{heroCourse?.fee ?? "TZS 450,000"}</p>
                 </div>
               </div>
-              <Link href="/training/project-management-professional" className="mt-6 inline-flex w-full items-center justify-center rounded-full bg-brand-green px-5 py-3 text-sm font-bold uppercase tracking-[0.24em] text-white transition duration-300 hover:bg-[#246327]">
+              <Link href={`/training/${heroCourse?.slug ?? "project-management-professional"}`} className="mt-6 inline-flex w-full items-center justify-center rounded-full bg-brand-green px-5 py-3 text-sm font-bold uppercase tracking-[0.24em] text-white transition duration-300 hover:bg-[#246327]">
                 View programme &rarr;
               </Link>
             </div>

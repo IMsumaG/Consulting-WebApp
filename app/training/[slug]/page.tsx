@@ -2,18 +2,25 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PublicShell } from "@/components/public/site-shell";
 import { SectionHeading, TestimonialCard } from "@/components/public/blocks";
-import { courses, testimonials } from "@/lib/site-content";
+import { testimonials } from "@/lib/site-content";
+import { getPublishedCourses } from "@/lib/courses";
 
 export async function generateMetadata({ params }: any) {
-  const course = courses.find((item) => item.slug === params.slug);
+  const { slug } = await params;
+  const courses = await getPublishedCourses();
+  const course = courses.find((item) => item.slug === slug);
   return {
     title: course?.title ?? "Training",
     description: course?.overview ?? "Merxano training programme details.",
   };
 }
 
-export default function CoursePage({ params }: any) {
-  const course = courses.find((item) => item.slug === params.slug);
+export const dynamic = "force-dynamic";
+
+export default async function CoursePage({ params }: any) {
+  const { slug } = await params;
+  const courses = await getPublishedCourses();
+  const course = courses.find((item) => item.slug === slug);
   if (!course) {
     notFound();
   }

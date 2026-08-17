@@ -36,11 +36,11 @@ function NavigationLinks({
         key={href}
         href={href}
         title={description}
-        className={`rounded-xl px-3 py-2.5 text-sm font-bold transition ${compact ? "text-xs" : ""} ${isActive ? "bg-white text-brand-navy shadow-sm" : "text-white/70 hover:bg-white/10 hover:text-white"}`}
+        className={`rounded-xl px-3 py-2.5 text-sm font-bold transition ${compact ? "text-xs" : ""} ${isActive ? "bg-brand-green text-white shadow-sm" : "text-white/70 hover:bg-white/10 hover:text-white"}`}
       >
         <span className="flex items-center justify-between gap-3">
           <span>{label}</span>
-          {badge !== undefined ? <span className={`rounded-full px-2 py-0.5 text-[10px] font-extrabold ${isActive ? "bg-brand-green/10 text-brand-green" : "bg-white/15 text-white"}`}>{badge}</span> : null}
+          {badge !== undefined ? <span className={`rounded-full px-2 py-0.5 text-[10px] font-extrabold ${isActive ? "bg-white/20 text-white" : "bg-brand-green/20 text-[#b9dfad]"}`}>{badge}</span> : null}
         </span>
       </Link>
     );

@@ -1,18 +1,24 @@
 import { notFound } from "next/navigation";
 import { PublicShell } from "@/components/public/site-shell";
 import { BookingForm } from "@/components/public/forms";
-import { courses } from "@/lib/site-content";
+import { getPublishedCourses } from "@/lib/courses";
 
 export async function generateMetadata({ params }: any) {
-  const course = courses.find((item) => item.cohortId === params.cohortId);
+  const { cohortId } = await params;
+  const courses = await getPublishedCourses();
+  const course = courses.find((item) => item.cohortId === cohortId || item.slug === cohortId);
   return {
     title: course ? `Booking - ${course.title}` : "Booking",
     description: "Reserve your seat with Merxano Consulting.",
   };
 }
 
-export default function BookingPage({ params }: any) {
-  const course = courses.find((item) => item.cohortId === params.cohortId);
+export const dynamic = "force-dynamic";
+
+export default async function BookingPage({ params }: any) {
+  const { cohortId } = await params;
+  const courses = await getPublishedCourses();
+  const course = courses.find((item) => item.cohortId === cohortId || item.slug === cohortId);
   if (!course) {
     notFound();
   }

@@ -22,12 +22,6 @@
   --font-mono: var(--font-mono);
 }
 
-@layer utilities {
-  .bg-brand-navy {
-    color: white;
-  }
-}
-
 * {
   box-sizing: border-box;
 }
@@ -51,6 +45,30 @@ a {
   text-decoration: none;
 }
 
+/* Ensure solid navy and green buttons always have pure white text across all link states */
+a.bg-brand-navy,
+button.bg-brand-navy,
+a.bg-brand-green,
+button.bg-brand-green,
+a[class*="bg-brand-navy"]:not([class*="bg-brand-navy/"]),
+button[class*="bg-brand-navy"]:not([class*="bg-brand-navy/"]),
+a[class*="bg-brand-green"]:not([class*="bg-brand-green/"]),
+button[class*="bg-brand-green"]:not([class*="bg-brand-green/"]) {
+  color: #ffffff !important;
+}
+
+a.bg-brand-navy:visited,
+a.bg-brand-green:visited,
+a[class*="bg-brand-navy"]:not([class*="bg-brand-navy/"]):visited,
+a[class*="bg-brand-green"]:not([class*="bg-brand-green/"]):visited {
+  color: #ffffff !important;
+}
+
+.text-white,
+.text-white:visited {
+  color: #ffffff !important;
+}
+
 ::selection {
   background: rgba(46, 125, 50, 0.15);
   color: #0f2d30;
@@ -61,7 +79,7 @@ a {
   outline-offset: 4px;
 }
 
-/* Beautiful modern card shadow inspired by modern portals */
+/* Modern card shadows */
 .premium-shadow {
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.03), 
               0 10px 40px -12px rgba(15, 45, 48, 0.07);
@@ -70,5 +88,9 @@ a {
 .premium-shadow-lg {
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 
               0 20px 80px -20px rgba(15, 45, 48, 0.12);
+}
+
+.hero-glow {
+  background: radial-gradient(circle at top left, rgba(46, 125, 50, 0.15), transparent 50%);
 }
 

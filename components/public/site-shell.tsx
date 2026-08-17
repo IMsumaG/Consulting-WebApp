@@ -33,45 +33,74 @@ export function PublicShell({ children, message }: { children: ReactNode; messag
         </div>
 
         <header className="sticky top-0 z-40 border-b border-slate-200/70 bg-white/90 backdrop-blur-xl">
-          <div className="mx-auto flex max-w-7xl items-center gap-3 px-4 py-3 sm:px-6 sm:py-4 lg:grid lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] lg:gap-6 lg:px-8">
-            <div className="flex min-w-0 flex-1 items-center pr-1 sm:pr-2 lg:flex-none lg:justify-self-start">
+          <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 sm:py-4 lg:px-8">
+            {/* Brand Logo & Wordings - shrink-0 prevents any squishing */}
+            <div className="flex shrink-0 items-center">
               <Link href="/" className="flex items-center gap-2.5 group sm:gap-3" aria-label="Merxano Consulting home">
-                <div className="relative h-11 w-11 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 p-1 shadow-sm sm:h-12 sm:w-12">
+                <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 p-1 shadow-sm sm:h-12 sm:w-12">
                   <Image src="/images/merxano-logo.jpg" alt="Merxano Logo" width={48} height={48} priority className="object-contain w-full h-full mix-blend-multiply" />
                 </div>
-                <div className="flex min-w-0 flex-col">
-                  <strong className="truncate text-sm font-bold tracking-tight text-[#0f2d30] transition duration-200 group-hover:text-brand-green sm:text-base">
+                <div className="flex flex-col">
+                  <strong className="text-sm font-bold tracking-tight text-[#0f2d30] transition duration-200 group-hover:text-brand-green sm:text-base whitespace-nowrap">
                     Merxano Consulting
                   </strong>
-                  <small className="hidden truncate text-[0.5rem] font-semibold uppercase tracking-[0.2em] text-[#0f2d30]/65 sm:block sm:text-[0.55rem]">
+                  <small className="hidden text-[0.55rem] font-semibold uppercase tracking-[0.18em] text-[#0f2d30]/65 sm:block whitespace-nowrap">
                     Professional Advisory &amp; Training
                   </small>
                 </div>
               </Link>
             </div>
 
-            <nav className="hidden flex-1 items-center justify-center gap-5 lg:flex lg:flex-none" aria-label="Public navigation">
+            {/* Navigation Links - Positioned cleanly between Logo and CTA */}
+            <nav className="hidden items-center justify-end gap-1 lg:flex xl:gap-2" aria-label="Public navigation">
               {navigation.map((item) => (
-                <Link key={item.href} href={item.href} className="text-[0.8rem] font-semibold text-[#0f2d30]/75 transition duration-200 hover:text-brand-green hover:underline decoration-brand-green decoration-2 underline-offset-4">
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="rounded-full px-2.5 py-1.5 text-xs font-semibold text-[#0f2d30]/80 transition-all duration-200 hover:bg-brand-green/10 hover:text-brand-green xl:px-3.5 xl:text-[0.82rem]"
+                >
                   {item.label}
                 </Link>
               ))}
             </nav>
 
-            <div className="flex shrink-0 items-center justify-end gap-2 sm:gap-3 lg:justify-self-end">
-              <Link href="/contact" className="hidden rounded-full bg-brand-green px-3.5 py-2 text-[0.7rem] font-bold uppercase tracking-[0.24em] text-white visited:text-white hover:bg-[#246327] hover:text-white focus:text-white active:text-white shadow-sm transition sm:inline-flex">
+            {/* Right Action (Get Started & Mobile Menu) */}
+            <div className="flex shrink-0 items-center gap-2 sm:gap-3">
+              <Link
+                href="/contact"
+                className="inline-flex items-center justify-center rounded-full bg-brand-green px-3.5 py-1.5 text-[0.68rem] font-bold uppercase tracking-[0.18em] text-white shadow-sm transition hover:bg-[#246327] sm:px-4 sm:py-2 sm:text-xs sm:tracking-[0.2em]"
+              >
                 Get Started
               </Link>
               <details className="relative lg:hidden">
-                <summary className="list-none cursor-pointer rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-bold uppercase tracking-[0.24em] text-brand-navy hover:bg-slate-50 select-none">
-                  Menu
+                <summary
+                  aria-label="Toggle navigation menu"
+                  className="flex h-8 w-8 cursor-pointer list-none items-center justify-center rounded-full border border-slate-200 bg-white text-brand-navy shadow-sm transition hover:border-brand-green/30 hover:bg-slate-50 select-none [&::-webkit-details-marker]:hidden sm:h-9 sm:w-9"
+                >
+                  {/* 3-line hamburger icon */}
+                  <svg
+                    className="h-4 w-4 stroke-[#0d1b3d]"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    strokeWidth="2.2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <line x1="4" y1="6" x2="20" y2="6" />
+                    <line x1="4" y1="12" x2="20" y2="12" />
+                    <line x1="4" y1="18" x2="20" y2="18" />
+                  </svg>
                 </summary>
-                <div className="absolute right-0 top-[calc(100%+0.5rem)] z-50 grid w-[min(13rem,calc(100vw-2rem))] rounded-2xl border border-slate-200 bg-white p-2 shadow-xl premium-shadow">
+                <div className="absolute right-0 top-[calc(100%+0.5rem)] z-50 grid w-[min(14rem,calc(100vw-2rem))] rounded-2xl border border-slate-200 bg-white p-2 shadow-xl premium-shadow">
                   <span className="mb-1 border-b border-slate-100 px-4 py-2 text-xs font-extrabold uppercase tracking-[0.24em] text-brand-green">
                     Merxano Portal
                   </span>
                   {navigation.map((item) => (
-                    <Link key={item.href} href={item.href} className="rounded-xl px-4 py-2.5 text-sm font-semibold text-[#0f2d30]/85 transition hover:bg-slate-50 hover:text-brand-green">
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className="rounded-xl px-4 py-2.5 text-sm font-semibold text-[#0f2d30]/85 transition hover:bg-brand-green/10 hover:text-brand-green"
+                    >
                       {item.label}
                     </Link>
                   ))}
