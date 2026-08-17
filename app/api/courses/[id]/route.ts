@@ -2,6 +2,11 @@ import { z } from "zod";
 import prisma from "@/lib/prisma";
 import { fail, ok, parseJson, requireAdmin, ApiAuthError, ApiValidationError } from "@/lib/api";
 
+const courseImageSchema = z.string().trim().refine(
+  (value) => value.startsWith("/") || URL.canParse(value),
+  "Use a local image path or a valid image URL",
+);
+
 const updateSchema = z.object({
   title: z.string().min(3).optional(),
   slug: z.string().min(3).optional(),
@@ -15,7 +20,7 @@ const updateSchema = z.object({
   deliveryMode: z.enum(["ONLINE", "PHYSICAL", "HYBRID"]).optional(),
   trainerInfo: z.string().min(10).optional(),
   certInfo: z.string().optional().nullable(),
-  imageUrl: z.string().url().optional().nullable(),
+  imageUrl: courseImageSchema.optional().nullable(),
   published: z.boolean().optional(),
 });
 
@@ -56,7 +61,15 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
     if (error instanceof ApiValidationError) {
       return fail(error.message, 400, error.details);
     }
-    return fail("Unable to update course", 500);
+
+    if (!process.env.DATABASE_URL || !process.env.DATABASE_URL.trim()) {
+      return fail(
+        "Database is not configured for local development. Add DATABASE_URL and DATABASE_URL_UNPOOLED to .env.local, then run npm run db:generate && npm run db:push.",
+        500,
+      );
+    }
+
+    return fail(error instanceof Error ? error.message : "Unable to update course", 500);
   }
 }
 
@@ -64,6 +77,13 @@ export async function DELETE(_: Request, { params }: { params: Promise<{ id: str
   try {
     await requireAdmin();
     const { id } = await params;
+    const cohortCount = await prisma.cohort.count({ where: { courseId: id } });
+    if (cohortCount > 0) {
+      return fail(
+        "This course has cohorts. Delete or cancel its cohorts before deleting the course.",
+        409,
+      );
+    }
     await prisma.course.delete({ where: { id } });
     return ok({ deleted: true });
   } catch (error) {

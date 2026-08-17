@@ -1,6 +1,7 @@
 import Link from "next/link";
 import prisma from "@/lib/prisma";
 import { AdminShell } from "@/components/admin/admin-shell";
+import { ResourceActions } from "@/components/admin/resource-actions";
 
 export const metadata = {
   title: "Insights",
@@ -20,7 +21,7 @@ export default async function AdminInsightsPage() {
       title="Insights"
       subtitle="Create, update, and publish the articles shown on the public blog."
       active="/admin/insights"
-      action={{ href: "#", label: "New article" }}
+      action={{ href: "/admin/insights/new", label: "New article" }}
     >
       <section className="rounded-[1.75rem] border border-slate-200/80 bg-white p-6 shadow-[0_18px_50px_rgba(16,32,58,0.06)]">
         <div className="overflow-x-auto rounded-[1.25rem] border border-slate-200/80">
@@ -31,6 +32,7 @@ export default async function AdminInsightsPage() {
                 <th className="px-4 py-3">Category</th>
                 <th className="px-4 py-3">Status</th>
                 <th className="px-4 py-3">Published</th>
+                <th className="px-4 py-3 text-right">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 bg-white">
@@ -47,6 +49,7 @@ export default async function AdminInsightsPage() {
                       {insight.published ? "Published" : "Draft"}
                     </span>
                   </td>
+                  <td className="px-4 py-4 text-right"><ResourceActions editHref={`/admin/insights/${insight.id}/edit`} endpoint={`/api/insights/${insight.id}`} label="article" /></td>
                   <td className="px-4 py-4 text-slate-600">
                     {insight.publishedAt ? new Date(insight.publishedAt).toLocaleDateString("en-GB") : "—"}
                   </td>

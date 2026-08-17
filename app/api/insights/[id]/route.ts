@@ -6,7 +6,7 @@ import { ApiAuthError, ApiValidationError, fail, ok, parseJson, requireAdmin } f
 const updateSchema = z.object({
   title: z.string().min(3).optional(),
   slug: z.string().min(3).optional(),
-  body: z.unknown().optional(),
+  body: z.any().optional(),
   excerpt: z.string().min(20).optional(),
   featuredImageUrl: z.string().url().optional().nullable(),
   author: z.string().min(2).optional(),
@@ -25,8 +25,13 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
     const insight = await prisma.insight.update({
       where: { id },
       data: {
-        ...body,
-        body: body.body as Prisma.InputJsonValue | undefined,
+        ...(body.title !== undefined && { title: body.title }),
+        ...(body.slug !== undefined && { slug: body.slug }),
+        ...(body.body !== undefined && { body: body.body as unknown as Prisma.InputJsonValue }),
+        ...(body.excerpt !== undefined && { excerpt: body.excerpt }),
+        ...(body.author !== undefined && { author: body.author }),
+        ...(body.category !== undefined && { category: body.category }),
+        ...(body.published !== undefined && { published: body.published }),
         featuredImageUrl: body.featuredImageUrl ?? undefined,
         publishedAt: body.publishedAt ? new Date(body.publishedAt) : undefined,
         metaTitle: body.metaTitle ?? undefined,

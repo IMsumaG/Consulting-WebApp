@@ -78,6 +78,13 @@ export async function DELETE(_: Request, { params }: { params: Promise<{ id: str
   try {
     await requireAdmin();
     const { id } = await params;
+    const bookingCount = await prisma.individualBooking.count({ where: { cohortId: id } });
+    if (bookingCount > 0) {
+      return fail(
+        "This cohort has registrations. Mark it as cancelled instead of deleting it.",
+        409,
+      );
+    }
     await prisma.cohort.delete({ where: { id } });
     return ok({ deleted: true });
   } catch (error) {

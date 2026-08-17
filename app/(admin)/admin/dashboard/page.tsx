@@ -87,8 +87,8 @@ export default async function AdminDashboardPage() {
               View all
             </Link>
           </div>
-          <div className="mt-6 overflow-x-auto rounded-[1.25rem] border border-slate-200/80">
-            <table className="min-w-[560px] divide-y divide-slate-200 text-sm">
+          <div className="mt-6 overflow-hidden rounded-[1.25rem] border border-slate-200/80">
+            <table className="min-w-full divide-y divide-slate-200 text-sm">
               <thead className="bg-slate-50 text-left text-xs uppercase tracking-[0.18em] text-slate-500">
                 <tr>
                   <th className="px-4 py-3">Participant</th>

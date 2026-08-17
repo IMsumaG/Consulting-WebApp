@@ -1,10 +1,22 @@
 import Link from "next/link";
 import { PublicShell } from "@/components/public/site-shell";
 import { CourseCard, InsightCard, SectionHeading, StatChip, TestimonialCard } from "@/components/public/blocks";
-import { brand, courses, insights, services, testimonials } from "@/lib/site-content";
+import { brand, insights, services, testimonials } from "@/lib/site-content";
 
-export default function HomePage() {
-  const featuredCourses = courses.filter((course) => course.featured);
+export default async function HomePage() {
+  let featuredCourses: any[] = [];
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"}/api/courses`,
+      { cache: "no-store" }
+    );
+    if (res.ok) {
+      const data = await res.json();
+      featuredCourses = (data.courses ?? []).filter((c: any) => c.featured);
+    }
+  } catch {
+    // DB unreachable – render without featured courses
+  }
 
   return (
     <PublicShell>

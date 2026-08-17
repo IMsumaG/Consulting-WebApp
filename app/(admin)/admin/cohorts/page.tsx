@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Prisma } from "@prisma/client";
 import prisma from "@/lib/prisma";
 import { AdminShell } from "@/components/admin/admin-shell";
+import { ResourceActions } from "@/components/admin/resource-actions";
 
 const formatDate = new Intl.DateTimeFormat("en-GB", {
   day: "2-digit",
@@ -28,7 +29,7 @@ export default async function AdminCohortsPage() {
       title="Cohorts"
       subtitle="Track dates, capacity, and the delivery state for each training run."
       active="/admin/cohorts"
-      action={{ href: "#", label: "Add cohort" }}
+      action={{ href: "/admin/cohorts/new", label: "Add cohort" }}
     >
       <section className="rounded-[1.75rem] border border-slate-200/80 bg-white p-6 shadow-[0_18px_50px_rgba(16,32,58,0.06)]">
         <div className="overflow-x-auto rounded-[1.25rem] border border-slate-200/80">
@@ -40,6 +41,7 @@ export default async function AdminCohortsPage() {
                 <th className="px-4 py-3">Seats</th>
                 <th className="px-4 py-3">Fee</th>
                 <th className="px-4 py-3">Status</th>
+                <th className="px-4 py-3 text-right">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 bg-white">
@@ -58,6 +60,7 @@ export default async function AdminCohortsPage() {
                       {cohort.status}
                     </span>
                   </td>
+                  <td className="px-4 py-4 text-right"><ResourceActions editHref={`/admin/cohorts/${cohort.id}/edit`} endpoint={`/api/cohorts/${cohort.id}`} label="cohort" /></td>
                 </tr>
               ))}
             </tbody>

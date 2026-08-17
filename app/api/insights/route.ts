@@ -6,7 +6,7 @@ import { ApiAuthError, ApiValidationError, fail, ok, parseJson, requireAdmin } f
 const insightSchema = z.object({
   title: z.string().min(3),
   slug: z.string().min(3),
-  body: z.unknown(),
+  body: z.any(),
   excerpt: z.string().min(20),
   featuredImageUrl: z.string().url().optional().nullable(),
   author: z.string().min(2),
@@ -31,8 +31,13 @@ export async function POST(request: Request) {
     const body = await parseJson(request, insightSchema);
     const insight = await prisma.insight.create({
       data: {
-        ...body,
-        body: body.body as Prisma.InputJsonValue,
+        title: body.title,
+        slug: body.slug,
+        body: body.body as unknown as Prisma.InputJsonValue,
+        excerpt: body.excerpt,
+        author: body.author,
+        category: body.category,
+        published: body.published ?? false,
         featuredImageUrl: body.featuredImageUrl ?? null,
         publishedAt: body.publishedAt ? new Date(body.publishedAt) : null,
         metaTitle: body.metaTitle ?? null,

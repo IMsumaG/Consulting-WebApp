@@ -24,11 +24,7 @@
 
 @layer utilities {
   .bg-brand-navy {
-    background-color: var(--brand-navy);
-  }
-
-  .bg-brand-green {
-    background-color: var(--brand-green);
+    color: white;
   }
 }
 
@@ -43,20 +39,16 @@ html {
 
 body {
   min-height: 100%;
-  overflow-x: hidden;
-  background: linear-gradient(180deg, #f8fafc 0%, #f2f6f8 100%);
+  background-color: #f8fafc;
   color: #0f2d30;
   font-family: var(--font-sans), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
-@layer base {
-  a,
-  a:visited {
-    color: inherit;
-    text-decoration: none;
-  }
+a {
+  color: inherit;
+  text-decoration: none;
 }
 
 ::selection {
@@ -69,21 +61,14 @@ body {
   outline-offset: 4px;
 }
 
+/* Beautiful modern card shadow inspired by modern portals */
 .premium-shadow {
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.03),
-    0 10px 40px -12px rgba(15, 45, 48, 0.07);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.03), 
+              0 10px 40px -12px rgba(15, 45, 48, 0.07);
 }
 
 .premium-shadow-lg {
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02),
-    0 20px 80px -20px rgba(15, 45, 48, 0.12);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 
+              0 20px 80px -20px rgba(15, 45, 48, 0.12);
 }
 
-.soft-grid {
-  background-image: linear-gradient(rgba(13, 27, 61, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(13, 27, 61, 0.03) 1px, transparent 1px);
-  background-size: 28px 28px;
-}
-
-.hero-glow {
-  background: radial-gradient(circle at top left, rgba(46, 125, 50, 0.2), transparent 40%);
-}

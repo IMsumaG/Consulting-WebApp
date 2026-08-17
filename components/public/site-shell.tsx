@@ -10,11 +10,13 @@ function WhatsAppButton({ message }: { message?: string }) {
       href={`https://wa.me/${brand.whatsapp}?text=${text}`}
       target="_blank"
       rel="noreferrer"
-      className="fixed bottom-4 right-4 z-50 inline-flex items-center gap-2 rounded-full bg-brand-green px-4 py-3 text-sm font-bold text-white shadow-lg transition duration-300 hover:-translate-y-1 hover:bg-[#246327] hover:shadow-xl sm:bottom-6 sm:right-6 sm:gap-2.5 sm:px-5 sm:py-3.5"
+      aria-label="Chat with us on WhatsApp"
+      className="fixed bottom-4 right-4 z-50 inline-flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] shadow-lg transition duration-300 hover:-translate-y-1 hover:bg-[#1ebe5d] hover:shadow-xl sm:bottom-6 sm:right-6"
     >
-      <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white/20 text-xs">W</span>
-      <span className="sm:hidden">Chat</span>
-      <span className="hidden sm:inline">Chat with us</span>
+      {/* WhatsApp SVG icon */}
+      <svg viewBox="0 0 32 32" width="28" height="28" fill="white" xmlns="http://www.w3.org/2000/svg">
+        <path d="M16.003 2.667C8.64 2.667 2.667 8.64 2.667 16c0 2.347.613 4.64 1.773 6.667L2.667 29.333l6.827-1.747A13.267 13.267 0 0 0 16.003 29.333C23.36 29.333 29.333 23.36 29.333 16S23.36 2.667 16.003 2.667zm0 24c-2.12 0-4.2-.56-6.027-1.627l-.427-.253-4.053 1.04 1.08-3.933-.28-.44A10.587 10.587 0 0 1 4.667 16c0-6.253 5.08-11.333 11.333-11.333S27.333 9.747 27.333 16s-5.08 11.333-11.333 11.333h.003zm6.24-8.48c-.347-.173-2.04-1.007-2.36-1.12-.32-.12-.547-.173-.773.173-.227.347-.88 1.12-1.08 1.347-.2.227-.4.253-.747.08-.347-.173-1.467-.54-2.793-1.72-1.033-.92-1.727-2.053-1.933-2.4-.2-.347-.02-.533.153-.707.16-.16.347-.413.52-.62.173-.207.227-.347.347-.573.12-.227.06-.427-.027-.6-.093-.173-.773-1.867-1.067-2.56-.28-.667-.56-.573-.773-.587-.2-.013-.427-.013-.653-.013-.227 0-.6.087-.907.413-.307.333-1.173 1.147-1.173 2.8 0 1.653 1.2 3.253 1.373 3.48.173.227 2.36 3.6 5.72 5.053.8.347 1.427.553 1.913.707.8.253 1.533.213 2.107.133.64-.093 1.973-.807 2.253-1.587.28-.78.28-1.44.2-1.587-.08-.147-.307-.24-.653-.413z"/>
+      </svg>
     </a>
   );
 }
